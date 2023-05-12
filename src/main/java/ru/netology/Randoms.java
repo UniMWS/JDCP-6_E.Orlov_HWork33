@@ -8,25 +8,24 @@ public class Randoms implements Iterable<Integer> {
     private int min, max;
 
     public Randoms(int min, int max) {
-        this.min = min;
-        this.max = max;
+        this.min = Math.min(min, max);
+        this.max = Math.max(min, max);
         this.random = new Random();
     }
 
     @Override
     public Iterator<Integer> iterator() {
-        return new IteratorPrivate();
-    }
+        return new Iterator<>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
 
-    private class IteratorPrivate implements Iterator {
-        @Override
-        public boolean hasNext() {
-            return true;
-        }
-
-        @Override
-        public Integer next() {
-            return random.nextInt(max - min) + min + 1;
-        }
+            @Override
+            public Integer next() {
+                int i = max - min + 1;
+                return random.nextInt(Math.abs(i)) + min;
+            }
+        };
     }
 }
